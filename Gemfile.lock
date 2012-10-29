@@ -246,6 +246,7 @@ DEPENDENCIES
   guard-coffeescript
   guard-rspec
   haml (~> 3.1.1)
+  inherited_resources
   jasmine
   jslint_on_rails (~> 1.0.6)
   launchy

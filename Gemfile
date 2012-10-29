@@ -14,6 +14,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'inherited_resources'
   gem 'sass-rails'
   gem 'rspec-rails',    '~> 2.9.0'
   gem 'cucumber-rails', '1.2.1', :require => false
