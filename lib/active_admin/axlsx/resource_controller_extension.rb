@@ -27,7 +27,7 @@ module ActiveAdmin
             send_data xlsx.to_stream.read, :filename => "#{xlsx_filename}", :type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
           end
         end
-      #end 
+      end 
 
       protected
       # Returns a filename for the xlsx file using the collection_name
