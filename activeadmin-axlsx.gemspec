@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.description = <<-eof
   This gem uses axlsx to provide excel/xlsx downloads for resources in Active Admin. Often, users are happier with excel, so why not give it to them instead of CSV?
   eof
-  s.files = Dir.glob("{lib/**/*}") + %w{ LICENSE README.md Rakefile CHANGELOG.md .yardopts }
+  s.files = Dir.glob("{lib/**/*}") + %w{ LICENSE README.md Rakefile CHANGELOG.md }
   s.test_files  = Dir.glob("{spec/**/*}")
   s.add_runtime_dependency 'activeadmin'
   s.add_runtime_dependency 'axlsx'
