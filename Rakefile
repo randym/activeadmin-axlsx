@@ -12,3 +12,13 @@ end
 RSpec::Core::RakeTask.new
 task :default => :spec
 task :test => :spec
+
+desc "build the gem"
+task :build => :gendoc do
+  system "gem build activeadmin-axlsx.gemspec"
+end
+desc "build and release the gem"
+task :release => :build do
+  system "gem push activeadmin-axlsx#{ActiveAdmin::Axlsx::VERSION}.gem"
+end
+  

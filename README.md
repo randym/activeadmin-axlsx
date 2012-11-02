@@ -50,6 +50,10 @@ gem 'activeadmin-axlsx'
 Cool Toys
 ---------
 
+Here are a few quick examples of things you can easily tweak.
+Axlsx supports A LOT of the specification so if you are looking to do 
+something adventurous please ping me on irc. (freenode#axlsx)
+
 ##localize column headers
 
 ```ruby
@@ -61,18 +65,37 @@ end
 
 ##Use blocks for adding computed fields
 
+```ruby
+#app/admin/posts.rb
+ActiveAdmin.register Posts do
+  config.xlsx_builder.column('author_name') do |resource|
+    resource.author.name 
+  end
+end
+```
+
 ##Use shared strings for Mac Numbers Support
 
-##Add a chart
+```ruby
+#app/admin/posts.rb
+ActiveAdmin.register Posts do
+  config.xlsx_builder.shared_strings = true
+end
+```
 
 ##Change the column header style
 
-
-
+```ruby
+#app/admin/posts.rb
+ActiveAdmin.register Posts do
+  config.xlsx_builder.header_style = { :bg_color => 'FF0000',
+                                       :fg_color => 'FF' }
+end
+```
 
 #Specs
 ------
-This gem requires that you construct a rails application.
+Running specs for this gem requires that you construct a rails application.
 To execute the specs, navigate to the gem directory, 
 run bundle install and run these to rake tasks:
 
@@ -83,9 +106,6 @@ bundle exec rake setup
 ```
 bundle exec rake
 ```
-
-Please note that running setup will populate a rails application in the
-active admin spec directory for testing purposes.
 
 #Copyright and License
 ----------
