@@ -77,15 +77,6 @@ ActiveAdmin.register Posts do
 end
 ```
 
-##Use shared strings for Mac Numbers Support
-
-```ruby
-#app/admin/posts.rb
-ActiveAdmin.register Posts do
-  config.xlsx_builder.shared_strings = true
-end
-```
-
 ##Change the column header style
 
 ```ruby
