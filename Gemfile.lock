@@ -5,6 +5,22 @@ PATH
       activeadmin
       axlsx
 
+PATH
+  remote: ~/active_admin
+  specs:
+    activeadmin (0.5.0)
+      arbre (>= 1.0.1)
+      bourbon (>= 1.0.0)
+      devise (>= 1.1.2)
+      fastercsv
+      formtastic (>= 2.0.0)
+      inherited_resources (>= 1.3.1)
+      jquery-rails (>= 1.0.0)
+      kaminari (>= 0.13.0)
+      meta_search (>= 0.9.2)
+      rails (>= 3.0.0)
+      sass (>= 3.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -21,18 +37,6 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.1.3)
-    activeadmin (0.5.0)
-      arbre (>= 1.0.1)
-      bourbon (>= 1.0.0)
-      devise (>= 1.1.2)
-      fastercsv
-      formtastic (>= 2.0.0)
-      inherited_resources (>= 1.3.1)
-      jquery-rails (>= 1.0.0)
-      kaminari (>= 0.13.0)
-      meta_search (>= 0.9.2)
-      rails (>= 3.0.0)
-      sass (>= 3.1.0)
     activemodel (3.2.8)
       activesupport (= 3.2.8)
       builder (~> 3.0.0)
@@ -73,6 +77,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
+    columnize (0.3.6)
     cucumber (1.2.1)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.3)
@@ -83,6 +88,13 @@ GEM
       cucumber (>= 1.1.3)
       nokogiri (>= 1.5.0)
     database_cleaner (0.9.1)
+    debugger (1.2.1)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.1.1)
+      debugger-ruby_core_source (~> 1.1.4)
+    debugger-linecache (1.1.2)
+      debugger-ruby_core_source (>= 1.1.1)
+    debugger-ruby_core_source (1.1.4)
     devise (2.1.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -213,10 +225,6 @@ GEM
       multi_json (~> 1.0)
       rubyzip
     shoulda-matchers (1.0.0)
-    simplecov (0.7.1)
-      multi_json (~> 1.0)
-      simplecov-html (~> 0.7.1)
-    simplecov-html (0.7.1)
     slop (3.3.3)
     sprockets (2.1.3)
       hike (~> 1.2)
@@ -239,10 +247,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activeadmin!
   activeadmin-axlsx!
   capybara (= 1.1.2)
   cucumber-rails (= 1.2.1)
   database_cleaner
+  debugger
   guard-coffeescript
   guard-rspec
   haml (~> 3.1.1)
@@ -256,7 +266,6 @@ DEPENDENCIES
   rspec-rails (~> 2.9.0)
   sass-rails
   shoulda-matchers (= 1.0.0)
-  simplecov
   sprockets
   sqlite3
   yard

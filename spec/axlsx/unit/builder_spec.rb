@@ -12,6 +12,7 @@ module ActiveAdmin
           builder.shared_strings.should be_true
         end
       end
+
       context "with i18n_scope" do
         let(:builder) do
           Builder.new :i18n_scope => [:active_admin, :resource, :category]
@@ -24,7 +25,7 @@ module ActiveAdmin
 
       context "with a customized header style" do
         let (:header_style) do
-          { :bg_color => '00', :fg_color => 'FF', :sz => 14, :alignment => { :horizontal=> :center } }
+          { :bg_color => '00', :fg_color => 'FF', :sz => 12, :alignment => { :horizontal=> :center } }
         end
 
         let (:builder) do

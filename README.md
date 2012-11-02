@@ -47,11 +47,34 @@ to xlsx.
 gem 'activeadmin-axlsx'
 ```
 
+Cool Toys
+---------
+
+##localize column headers
+
+```ruby
+#app/admin/posts.rb
+ActiveAdmin.register Posts do
+  config.xlsx_builder.i18n_scope [:active_record, :models, :posts]
+end
+```
+
+##Use blocks for adding computed fields
+
+##Use shared strings for Mac Numbers Support
+
+##Add a chart
+
+##Change the column header style
+
+
+
+
 #Specs
 ------
-This gem (will have) has 100% test coverage. To execute the specs simply
-navigate to the gem directory, do a bit of bundle install magic and run
-these to rake tasks:
+This gem requires that you construct a rails application.
+To execute the specs, navigate to the gem directory, 
+run bundle install and run these to rake tasks:
 
 ```
 bundle exec rake setup

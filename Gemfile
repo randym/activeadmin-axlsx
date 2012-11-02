@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gemspec
-
+gem 'activeadmin', :path => '~/active_admin'
 group :development, :test do
   gem 'sqlite3'
 
@@ -26,4 +26,5 @@ group :test do
   gem 'guard-rspec'
   gem "guard-coffeescript"
   gem 'jasmine'
+  gem 'debugger'
 end
