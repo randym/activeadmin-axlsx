@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gemspec
-gem 'activeadmin', :path => '~/active_admin'
+gem 'activeadmin'
 group :development, :test do
   gem 'sqlite3'
 
