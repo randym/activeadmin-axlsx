@@ -34,7 +34,7 @@ module ActiveAdmin
 
       # when this is set to true the xlsx file will be generated with
       # shared strings and will inter-operate with Numbers for Mac
-      # This is false by default to minimize the generation time.
+      # This is true by default, but you can set it to false to minimize the generation time.
       attr_accessor :shared_strings
 
       # This has can be used to override the default header style for your
@@ -51,7 +51,6 @@ module ActiveAdmin
       # current translations
       # @note If you do not set this, the column name will be titleized.
       attr_accessor :i18n_scope
-
 
       # @param [Hash] options the options for this builder
       # @option [Hash] :header_style - a hash of style properties to apply
@@ -111,9 +110,7 @@ module ActiveAdmin
           return name.to_s.titleize unless i18n_scope
           I18n.t name, i18n_scope
         end
-
       end
     end
-
   end
 end
