@@ -38,6 +38,9 @@ resources. It lets you harness the full power of Axlsx when you want to
 but for the most part just stays out of your way and adds a link next to 
 the csv download for xlsx (Excel/numbers/Libre Office/Google Docs)
 
+
+![Screen 1](https://github.com/randym/activeadmin-axlsx/raw/master/screen_capture.png)
+
 Usage example:
 Simple add the following to your gemfile and you are good to go.
 All resource index views will now include a link for download directly
