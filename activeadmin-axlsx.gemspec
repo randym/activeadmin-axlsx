@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'activeadmin'
   s.add_runtime_dependency 'axlsx'
 
-  s.add_development_dependency 'yard'
   s.required_ruby_version = '>= 1.9.2'
   s.require_path = 'lib'
 end
