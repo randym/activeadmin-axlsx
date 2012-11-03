@@ -1,7 +1,7 @@
 Active Admin Axlsx: Office Open XML Spreadsheet Export for Active Admin
 ====================================
 
-If you are using this for comercial purposes, or just want to show your
+If you are using this for commercial purposes, or just want to show your
 appreciation for the gem, please don't hesitate to make a donation.
 
 [![Click here to lend your support to: axlsx and make a donation at www.pledgie.com !](http://www.pledgie.com/campaigns/17814.png?skin_name=chrome)](http://www.pledgie.com/campaigns/17814)
@@ -38,12 +38,10 @@ resources. It lets you harness the full power of Axlsx when you want to
 but for the most part just stays out of your way and adds a link next to 
 the csv download for xlsx (Excel/numbers/Libre Office/Google Docs)
 
-git ls-files -- {test,spec,features}/*
-
 ![Screen 1](https://github.com/randym/activeadmin-axlsx/raw/master/screen_capture.png)
 
 Usage example:
-Simple add the following to your gemfile and you are good to go.
+Simply add the following to your Gemfile and you are good to go.
 All resource index views will now include a link for download directly
 to xlsx.
 

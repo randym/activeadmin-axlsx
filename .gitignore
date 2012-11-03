@@ -1,1 +1,2 @@
 spec/rails
+*.gem
