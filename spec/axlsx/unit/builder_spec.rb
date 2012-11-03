@@ -1,5 +1,4 @@
 require 'spec_helper'
-include ActiveAdmin
 module ActiveAdmin
   module Axlsx
     describe Builder do

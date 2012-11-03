@@ -2,7 +2,6 @@ module ActiveAdmin
   module Axlsx
     module ResourceControllerExtension
       def self.included(base)
-        # TEST THIS
         base.send :alias_method_chain, :per_page, :xlsx
         base.send :alias_method_chain, :index, :xlsx
         base.send :respond_to, :xlsx

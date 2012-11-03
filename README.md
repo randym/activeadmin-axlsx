@@ -38,6 +38,7 @@ resources. It lets you harness the full power of Axlsx when you want to
 but for the most part just stays out of your way and adds a link next to 
 the csv download for xlsx (Excel/numbers/Libre Office/Google Docs)
 
+git ls-files -- {test,spec,features}/*
 
 ![Screen 1](https://github.com/randym/activeadmin-axlsx/raw/master/screen_capture.png)
 

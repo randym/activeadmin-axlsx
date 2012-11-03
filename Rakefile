@@ -14,7 +14,7 @@ task :default => :spec
 task :test => :spec
 
 desc "build the gem"
-task :build => :gendoc do
+task :build do
   system "gem build activeadmin-axlsx.gemspec"
 end
 desc "build and release the gem"
