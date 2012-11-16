@@ -89,8 +89,9 @@ end
 #Using the DSL
 
 Everything that you do with the config'd default builder can be done via
-the resource DSL. However, please note that just like the CSV exports
-you must explicitly declare the columns you want to render.
+the resource DSL. However, please note that unlike the CSV builder, all
+attributes will be included during serialization. Please us
+ignore_coulumn to remove those you do not want included in your reports.
 
 ##I18n
 
@@ -123,7 +124,7 @@ end
 ```ruby
 ActiveAdmin.register Post do
   xlsx do
-    remove_columns :id, :category_id, :author_id
+    ignore_columns :id, :category_id, :author_id
   end
 end
 ```
