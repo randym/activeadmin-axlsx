@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    activeadmin-axlsx (1.0.0)
+    activeadmin-axlsx (1.0.1)
       activeadmin (>= 0.5.0)
       axlsx
 

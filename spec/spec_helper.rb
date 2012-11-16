@@ -11,7 +11,15 @@ end
 def load_defaults!
   ActiveAdmin.unload!
   ActiveAdmin.load!
-  ActiveAdmin.register(Category)
+  @xlsx_config = ActiveAdmin.register Category do
+    xlsx :i18n_scope => [:fishery], :header_style => { :sz => 14 } do
+      column(:block) { |resource_item| "blocked content" }
+      ignore_columns :id
+      after_filter do |worksheet|
+        worksheet.add_row ['look mom, no hands!']
+      end
+    end
+  end
   ActiveAdmin.register(User)
   ActiveAdmin.register(Post){ belongs_to :user, :optional => true }
 end

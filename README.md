@@ -60,7 +60,7 @@ something adventurous please ping me on irc. (freenode#axlsx)
 
 ```ruby
 #app/admin/posts.rb
-ActiveAdmin.register Posts do
+ActiveAdmin.register Post do
   config.xlsx_builder.i18n_scope [:active_record, :models, :posts]
 end
 ```
@@ -69,7 +69,7 @@ end
 
 ```ruby
 #app/admin/posts.rb
-ActiveAdmin.register Posts do
+ActiveAdmin.register Post do
   config.xlsx_builder.column('author_name') do |resource|
     resource.author.name 
   end
@@ -80,9 +80,63 @@ end
 
 ```ruby
 #app/admin/posts.rb
-ActiveAdmin.register Posts do
+ActiveAdmin.register Post do
   config.xlsx_builder.header_style = { :bg_color => 'FF0000',
                                        :fg_color => 'FF' }
+end
+```
+
+#Using the DSL
+
+Everything that you do with the config'd default builder can be done via
+the resource DSL. However, please note that just like the CSV exports
+you must explicitly declare the columns you want to render.
+
+##I18n
+
+```ruby
+ActiveAdmin.register Post do
+  xlsx(:i18n_scope => [:active_admin, :axlsx, :post])
+end
+```
+
+##Customizing the header style
+
+```
+ActiveAdmin.register Post do
+  xlsx(:header_style => {:bg_color => 'FF0000', :fg_color => 'FF' })
+end
+```
+
+##Adding Columns
+
+```
+ActiveAdmin.register Post do
+  xlsx do
+    column(:author) { |post| post.author.name }
+  end
+end
+```
+
+##Removing columns
+
+```ruby
+ActiveAdmin.register Post do
+  xlsx do
+    remove_columns :id, :category_id, :author_id
+  end
+end
+```
+
+##Putting it all together
+
+```ruby
+ActiveAdmin.register Post do
+  xlsx(:i18n_scope = [:active_admin, :axlsx, :post], :header_style = {:fg_color => 'FF00FF00'}) do
+    remove_columns :id, :category_id, :author_id
+    column(:author) { |post| post.author.name }
+    column(:category) { |post| post.category.name }
+  end
 end
 ```
 
@@ -99,7 +153,10 @@ bundle exec rake setup
 ```
 bundle exec rake
 ```
-
+# Changelog
+**2012.11.16**
+  - Fixed DSL referencing
+  - Added remove_columns to builder and dls
 #Copyright and License
 ----------
 

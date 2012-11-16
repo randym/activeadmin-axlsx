@@ -15,7 +15,7 @@ module ActiveAdmin
       #     column :name
       #   end
       def xlsx(options={}, &block)
-        config.xlsx_builder = XlsxBuilder.new(options, &block)
+        config.xlsx_builder = ActiveAdmin::Axlsx::Builder.new(options, &block)
       end
 
     end

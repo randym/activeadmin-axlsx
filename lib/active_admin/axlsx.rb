@@ -16,8 +16,9 @@ class Railtie < ::Rails::Railtie
     rescue NameError
       puts "Mime module not defined. Skipping registration of xlsx"
     end
-    ActiveAdmin.send :include, ActiveAdmin::Axlsx::AutoloadExtension
+
     ActiveAdmin::ResourceDSL.send :include, ActiveAdmin::Axlsx::DSL
+    ActiveAdmin.send :include, ActiveAdmin::Axlsx::AutoloadExtension
     ActiveAdmin::Resource.send :include, ActiveAdmin::Axlsx::ResourceExtension
     ActiveAdmin::ResourceController.send :include, ActiveAdmin::Axlsx::ResourceControllerExtension
     # TODO remove < 0.5.1 block once active admin has released.

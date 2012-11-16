@@ -2,6 +2,12 @@ require 'spec_helper'
 module ActiveAdmin
   module Axlsx
     describe Builder do
+
+      context "serialization" do
+        #need to find some way of getting some data 
+        ActiveAdmin::GetMeSomeShit!
+      end
+
       context "with shared strings" do
         let(:builder) do
           Builder.new :shared_strings => true

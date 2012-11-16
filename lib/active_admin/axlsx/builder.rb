@@ -2,18 +2,18 @@ require 'axlsx'
 
 module ActiveAdmin
   module Axlsx
-    # XlsxBuilder extends CSVBuilder adding in xlsx specific options
+    # Builder extends CSVBuilder adding in xlsx specific options
     #
     # Usage example
     #
-    #   xlsx_builder = XlsxBuilder.new
+    #   xlsx_builder = ActiveAdmin::Axlsx::Builder.new
     #   xlsx_builder.column :id
     #   xlsx_builder.column('Name') { |resource| resource.full_name }
     #
-    #   xlsx_builder = XlsxBuilder.new :shared_strings => true
+    #   xlsx_builder = ActiveAdmin::Axlsx::Builder.new :shared_strings => true
     #   xlsx_builder.column :id
     #
-    #   xlsx_builder = XlsxBuiler.new :header_style => { :bg_color => '00', :fg_color => 'FF', :sz => 14, :alignment => { :horizontal => :center } }
+    #   xlsx_builder = ActiveAdmin::Axlsx::Builer.new :header_style => { :bg_color => '00', :fg_color => 'FF', :sz => 14, :alignment => { :horizontal => :center } }
     #   xlsx_buider.i18n_scope [:active_record, :models, :posts]
     class Builder < ActiveAdmin::CSVBuilder
 
@@ -29,8 +29,6 @@ module ActiveAdmin
         xlsx_builder.header_style = @@default_header_style
         xlsx_builder
       end
-
-      attr_reader :columns
 
       # when this is set to true the xlsx file will be generated with
       # shared strings and will inter-operate with Numbers for Mac
@@ -62,41 +60,43 @@ module ActiveAdmin
       # @note shared strings are an optional part of the ECMA-376 spec,and
       # are only required when you need to support Numbers.
       def initialize(options={}, &block)
-        super
-        @header_style = options.delete(:header_style) || @@default_header_style
-        @i18n_scope = options.delete(:i18n_scope)
+        @ignore_columns = []
+        @columns = []
+        @header_style = @@default_header_style.merge(options.delete(:header_style) || {})
+        @i18n_scope = options.delete(:i18n_scope) || []
         @shared_strings = options.delete(:shared_strings) || true
         instance_eval &block if block_given?
       end
-
-      # the Axlsx::Package
-      def package
-        @package ||= ::Axlsx::Package.new(:use_shared_strings => shared_strings)
-      end
-
       # Serializes the collection provided
       # @return [Axlsx::Package]
       def serialize(collection)
-        header_style_id = package.workbook.styles.add_style header_style
+        finalize_columns(collection)
         package.workbook.add_worksheet do |sheet|
           sheet.add_row header_row, :style => header_style_id
-          collection.each do |resource| 
-            sheet.add_row columns.map { |column| call_method_or_proc_on resource, column.data }
+          collection.each do |resource|
+            sheet.add_row @columns.map { |column| call_method_or_proc_on resource, column.data }
           end
+          @after_filter.call(sheet)
         end
         package
       end
 
-      # tranform column names into array of localized strings
-      # @return [Array]
-      def header_row
-        columns.map { |column| column.localized_name(i18n_scope) }
+      def after_filter(&block)
+        @after_filter = block
       end
 
       # Add a column
       def column(name, &block)
         @columns << Column.new(name, block)
       end
+
+      # Tells the serializer which columns to ignore during serialization
+      # each column_name should be a symbol
+      def ignore_columns(*column_names)
+        @ignore_columns += column_names
+      end
+
+      protected
 
       class Column
         attr_reader :name, :data
@@ -111,6 +111,36 @@ module ActiveAdmin
           I18n.t name, i18n_scope
         end
       end
+
+      private
+
+      # the Axlsx::Package
+      def package
+        @package ||= ::Axlsx::Package.new(:use_shared_strings => shared_strings)
+      end
+
+      # tranform column names into array of localized strings
+      # @return [Array]
+      def header_row
+        columns.map { |column| column.localized_name(i18n_scope) }
+      end
+
+      def header_style_id
+        package.workbook.styles.add_style header_style
+      end
+
+      def finalize_columns_for_resource(collection)
+        (resource_columns(collection) && @columns).delete_if do |column|
+          @remove_columns.include? column.name
+        end
+      end
+
+      def resource_columns(resource)
+        @resource_columns ||= resource.content_columns.each do |content_column|
+          @coumns << Column.new(content_column.name.to_sym)
+        end.shift(Column.new :id)
+      end
+
     end
   end
 end
