@@ -163,7 +163,8 @@ bundle exec rake
 
 **2012.11.16**
   - Fixed DSL referencing
-  - Added remove_columns to builder and dls
+  - Added delete_columns to builder and DSL
+
 #Copyright and License
 ----------
 
