@@ -160,6 +160,7 @@ bundle exec rake
   - resouce content column are now pre-populated.
   - added before and after filters
   - 100% spec coverage
+
 **2012.11.16**
   - Fixed DSL referencing
   - Added remove_columns to builder and dls
