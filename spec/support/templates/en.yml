@@ -1,4 +1,13 @@
 # Sample translations used to test ActiveAdmin's I18n integration.
+  axlsx:
+    post:
+      id: ID
+      title: Title
+      body: Content
+      published_at: Published On
+      author: Publisher
+      created_at: Created
+      updated_at: Updated
   activerecord:
     models:
       store:

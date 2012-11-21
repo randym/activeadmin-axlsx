@@ -1,10 +1,9 @@
 source 'https://rubygems.org'
-
+gem 'axlsx'
 gemspec
-gem 'activeadmin'
+
 group :development, :test do
   gem 'sqlite3'
-
   gem 'rake',           '~> 0.9.2.2', :require => false
   gem 'haml',           '~> 3.1.1', :require => false
   gem 'yard'
@@ -12,10 +11,11 @@ group :development, :test do
   gem "sprockets"
   gem 'rails-i18n' # Gives us default i18n for many languages
 end
-
+gem 'simplecov', :require => false, :group => :test
 group :test do
   gem 'inherited_resources'
   gem 'sass-rails'
+  gem 'rspec-mocks'
   gem 'rspec-rails',    '~> 2.9.0'
   gem 'cucumber-rails', '1.2.1', :require => false
   gem 'capybara',       '1.1.2'

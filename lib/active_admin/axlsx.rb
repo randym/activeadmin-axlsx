@@ -1,5 +1,4 @@
 require 'active_admin'
-require 'active_admin/axlsx/autoload_extension'
 require 'active_admin/axlsx/build_download_format_links'
 require 'active_admin/axlsx/version'
 require 'active_admin/axlsx/builder'
@@ -14,11 +13,10 @@ class Railtie < ::Rails::Railtie
         Mime::Type.register "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", :xlsx
       end
     rescue NameError
-      puts "Mime module not defined. Skipping registration of xlsx"
+      # noop
     end
 
     ActiveAdmin::ResourceDSL.send :include, ActiveAdmin::Axlsx::DSL
-    ActiveAdmin.send :include, ActiveAdmin::Axlsx::AutoloadExtension
     ActiveAdmin::Resource.send :include, ActiveAdmin::Axlsx::ResourceExtension
     ActiveAdmin::ResourceController.send :include, ActiveAdmin::Axlsx::ResourceControllerExtension
     # TODO remove < 0.5.1 block once active admin has released.

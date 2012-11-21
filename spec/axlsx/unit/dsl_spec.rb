@@ -1,32 +1,46 @@
-require 'spec_helper' 
-include ActiveAdmin
+require 'spec_helper'
 
 module ActiveAdmin
   module Axlsx
-    describe DSL do
-      before { load_defaults! }
+    describe ::ActiveAdmin::ResourceDSL do
+      context 'in a registraiton block' do
+        let(:builder) {
+          config = ActiveAdmin.register(Post) do
+            xlsx(i18n_scope: [:rspec], header_style: { sz: 20 }) do
+              delete_columns :id, :created_at
+              column(:author) { |post| post.author.first_name }
+              before_filter { |sheet| sheet.add_row ['before_filter'] }
+              after_filter { |sheet| sheet.add_row['after_filter'] }
+            end
+          end
+          config.xlsx_builder
+        }
 
-      let(:application){ ActiveAdmin::Application.new }
-      let(:namespace){ Namespace.new(application, :admin) }
-      context 'with a registered Category resource' do
-        it 'registers the columns with the xlsx_builder' do
-          @xlsx_config.xlsx_builder.columns.size.should == 1
-          @xlsx_config.xlsx_builder.columns.index { |item| item.name == :block}.should == 0
+
+        it "uses our customized i18n scope" do
+          builder.i18n_scope.should == [:rspec]
         end
 
-        it 'allows specification of the i18n scope' do
-          @xlsx_config.xlsx_builder.i18n_scope.should == [:fishery]
+        it "removed the columns we told it to ignore" do
+          [:id, :create_at].each do |removed|
+            builder.columns.index{|column| column.name == removed}.should be_nil
+          end
         end
 
-        it 'allows specification of header style attributes' do
-          @xlsx_config.xlsx_builder.header_style[:sz].should == 14
+        it "added the columns we declared" do
+          builder.columns.index{ |column| column.name == :author}.should_not be_nil
         end
 
-        it 'allows specification of column names to be ignored' do
-          @xlsx_config.xlsx_builder.ignore_columns.should == [:id]
+        it "has a before filter set" do
+          builder.instance_values["before_filter"].should be_a(Proc)
+        end
+        it "has an after filter set" do
+          builder.instance_values["after_filter"].should be_a(Proc)
+        end
+        it "updates the header style" do
+          builder.header_style[:sz].should be(20)
         end
       end
     end
   end
 end
-

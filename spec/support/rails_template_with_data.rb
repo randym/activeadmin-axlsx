@@ -25,7 +25,6 @@ scopes = <<-EOF
     posts.where(:author_id => current_admin_user.id)
   end
 
-  xlsx.columns = [:id]
 EOF
 inject_into_file 'app/admin/posts.rb', scopes , :after => "ActiveAdmin.register Post do\n"
 
@@ -51,7 +50,7 @@ append_file "db/seeds.rb", <<-EOF
     published_at = published_at_values[i % published_at_values.size]
     Post.create :title => "Blog Post \#{i}",
                 :body => "Blog post \#{i} is written by \#{user.username} about \#{cat.name}",
-                :category => cat,
+                :category_id => cat.id,
                 :published_at => published_at,
                 :author => user
   end

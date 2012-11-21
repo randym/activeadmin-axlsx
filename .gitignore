@@ -1,2 +1,4 @@
 spec/rails
 *.gem
+coverage
+*.xlsx

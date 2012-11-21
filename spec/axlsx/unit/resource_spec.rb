@@ -4,31 +4,23 @@ include ActiveAdmin
 module ActiveAdmin
   module Axlsx
     describe Resource do
-      before { load_defaults! }
+      let(:resource) { ActiveAdmin.register(Post) }
 
-      let(:application){ ActiveAdmin::Application.new }
-      let(:namespace){ Namespace.new(application, :admin) }
-
-      def config(options = {})
-        @config ||= Resource.new(namespace, Category, options)
-      end
-
-      describe "#xlsx_builder" do
-        context "when no xlsx_builder set" do
-          it "should return a default xlsx_builder with id and content columns" do
-            config.xlsx_builder.columns.size.should == Category.content_columns.size + 1
-          end
-        end
-
-        context "when xslx_builder set" do
-          it "should return the xlsx_builder we set" do
-            xlsx_builder = Builder.new
-            config.xlsx_builder = xlsx_builder
-            config.xlsx_builder.should == xlsx_builder
-          end
+      let(:custom_builder) do
+        Builder.new(Post) do |builder|
+          column(:fake) { :fake }
         end
       end
 
+      context 'when registered' do
+        it "each resource has an xlsx_builer" do
+          resource.xlsx_builder.should be_a(Builder)
+        end
+
+        it "We can specify our own configured builder" do
+          lambda { resource.xlsx_builder = custom_builder }.should_not raise_error
+        end
+      end
     end
   end
 end

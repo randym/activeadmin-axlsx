@@ -86,57 +86,58 @@ ActiveAdmin.register Post do
 end
 ```
 
+##Remove columns
+
+```ruby
+#app/admin/posts.rb
+ActiveAdmin.register Post do
+  config.xlsx_builder.delete_columns :id, :created_at, :updated_at
+end
+```
+
 #Using the DSL
 
 Everything that you do with the config'd default builder can be done via
-the resource DSL. However, please note that unlike the CSV builder, all
-attributes will be included during serialization. Please us
-ignore_coulumn to remove those you do not want included in your reports.
+the resource DSL. 
 
-##I18n
+Below is an example of the DSL
 
 ```ruby
 ActiveAdmin.register Post do
-  xlsx(:i18n_scope => [:active_admin, :axlsx, :post])
-end
-```
+  # i18n_scope and header style are set via options
+  xlsx(:i18n_scope => [:active_admin, :axlsx, :post], 
+       :header_style => {:bg_color => 'FF0000', :fg_color => 'FF' }) do
 
-##Customizing the header style
+    # deleting columns from the report
+    delete_columns :id, :created_at, :updated_at
 
-```
-ActiveAdmin.register Post do
-  xlsx(:header_style => {:bg_color => 'FF0000', :fg_color => 'FF' })
-end
-```
+    # adding a column to the report
+    column(:author) { |resource| "#{resource.author.first_name} #{resource.author.last_name}" }
+    
+    # creating a chart and inserting additional data with after_filter
+    after_filter { |sheet|
+      sheet.add_row []
+      sheet.add_row ['Author Name', 'Number of Posts']
+      data = []
+      labels = []
+      User.all.each do |user|
+        data << user.posts.size
+        labels << "#{user.first_name} #{user.last_name}"
+        sheet.add_row [labels.last, data.last]
+      end
+      chart_color =  %w(88F700 279CAC B2A200 FD66A3 F20062 C8BA2B 67E6F8 DFFDB9 FFE800 B6F0F8)
+      sheet.add_chart(::Axlsx::Pie3DChart, :title => "post by author") do |chart|
+        chart.add_series :data => data, :labels => labels, :colors => chart_color
+        chart.start_at 4, 0
+        chart.end_at 7, 20
+      end
+    }
 
-##Adding Columns
-
-```
-ActiveAdmin.register Post do
-  xlsx do
-    column(:author) { |post| post.author.name }
-  end
-end
-```
-
-##Removing columns
-
-```ruby
-ActiveAdmin.register Post do
-  xlsx do
-    ignore_columns :id, :category_id, :author_id
-  end
-end
-```
-
-##Putting it all together
-
-```ruby
-ActiveAdmin.register Post do
-  xlsx(:i18n_scope = [:active_admin, :axlsx, :post], :header_style = {:fg_color => 'FF00FF00'}) do
-    remove_columns :id, :category_id, :author_id
-    column(:author) { |post| post.author.name }
-    column(:category) { |post| post.category.name }
+    # iserting data with before_filter
+    before_filter do |sheet|
+      sheet.add_row ['Created', Time.zone.now]
+      sheet.add_row []
+    end
   end
 end
 ```
@@ -155,6 +156,10 @@ bundle exec rake setup
 bundle exec rake
 ```
 # Changelog
+**2012.11.29** Release 2.0.0
+  - resouce content column are now pre-populated.
+  - added before and after filters
+  - 100% spec coverage
 **2012.11.16**
   - Fixed DSL referencing
   - Added remove_columns to builder and dls
