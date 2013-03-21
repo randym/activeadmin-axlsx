@@ -6,7 +6,7 @@ require 'active_admin/axlsx/dsl'
 require 'active_admin/axlsx/resource_extension'
 require 'active_admin/axlsx/resource_controller_extension'
 class Railtie < ::Rails::Railtie
-  config.after_initialize do
+  config.before_initialize do
     begin
       if Mime::Type.lookup_by_extension(:xlsx).nil?
         # The mime type to be used in respond_to |format| style web-services in rails

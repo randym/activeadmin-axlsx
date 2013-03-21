@@ -16,11 +16,11 @@ appreciation for the gem, please don't hesitate to make a donation.
 
 **Author**:  Randy Morgan
 
-**Copyright**:    2012
+**Copyright**:    2012 ~ 2013
 
 **License**: MIT License
 
-**Latest Version**: 1.0.0
+**Latest Version**: 2.0.1
 
 **Ruby Version**: 1.9.2, 1.9.3
 
@@ -156,6 +156,9 @@ bundle exec rake setup
 bundle exec rake
 ```
 # Changelog
+**2013.03.21** Release 2.0.1
+  - Fixed an issue with missing objects when using the DSL. 
+    Huge thanks to [Fivell](https://github.com/Fivell)
 **2012.11.29** Release 2.0.0
   - resouce content column are now pre-populated.
   - added before and after filters
@@ -168,6 +171,6 @@ bundle exec rake
 #Copyright and License
 ----------
 
-activeadmin-axlsx &copy; 2012 by [Randy Morgan](mailto:digial.ipseity@gmail.com).
+activeadmin-axlsx &copy; 2012 ~ 2013 by [Randy Morgan](mailto:digial.ipseity@gmail.com).
 
 activeadmin-axlsx is licensed under the MIT license. Please see the LICENSE document for more information.
