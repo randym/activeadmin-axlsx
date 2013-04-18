@@ -1,7 +1,6 @@
 require 'spec_helper'
 describe ActiveAdmin::ResourceController do
 
-
   let(:mime) { Mime::Type.lookup_by_extension(:xlsx) }
 
   let(:request) do
@@ -24,7 +23,6 @@ describe ActiveAdmin::ResourceController do
   it 'generates an xlsx filename' do
     controller.xlsx_filename.should == filename
   end
-
 
   context 'when making requests with the xlsx mime type' do
      it 'returns xlsx attachment when requested' do

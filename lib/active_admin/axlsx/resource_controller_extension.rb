@@ -12,7 +12,7 @@ module ActiveAdmin
         index_without_xlsx(options) do |format|
            format.xlsx do
             xlsx = active_admin_config.xlsx_builder.serialize(collection)
-            send_data xlsx.to_stream.read, :filename => "#{xlsx_filename}", :type => Mime::Type.lookup_by_extension(:xlsx)
+            send_data xlsx, :filename => "#{xlsx_filename}", :type => Mime::Type.lookup_by_extension(:xlsx)
           end
         end
       end

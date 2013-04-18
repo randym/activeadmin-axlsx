@@ -115,7 +115,7 @@ module ActiveAdmin
         apply_filter @before_filter
         export_collection(collection)
         apply_filter @after_filter
-        package
+        to_stream
       end
 
       protected
@@ -136,6 +136,16 @@ module ActiveAdmin
       end
 
       private
+
+      def to_stream
+        stream = package.to_stream.read
+        clean_up
+        stream
+      end
+
+      def clean_up
+        @package = @sheet = nil
+      end
 
       def export_collection(collection)
         header_row
@@ -162,7 +172,6 @@ module ActiveAdmin
         @sheet ||= package.workbook.add_worksheet
       end
 
-      # the Axlsx::Package
       def package
         @package ||= ::Axlsx::Package.new(:use_shared_strings => true)
       end
