@@ -16,9 +16,10 @@ end
 # load up activeadmin and activeadmin-axlsx
 require 'activeadmin-axlsx'
 ActiveAdmin.application.load_paths = [ENV['RAILS_ROOT'] + "/app/admin"]
-
 # start up rails
 require ENV['RAILS_ROOT'] + '/config/environment'
 
 # and finally,here's rspec
 require 'rspec/rails'
+ActiveAdmin.application.authentication_method = false
+ActiveAdmin.application.current_user_method = false
