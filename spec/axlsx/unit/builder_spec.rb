@@ -85,7 +85,10 @@ module ActiveAdmin
         before(:all) do
           User.stub!(:all) { users }
           Post.stub!(:all) { posts }
-          @package = builder.serialize(Post.all)
+          # disable clean up so we can get the package.
+          builder.stub(:clean_up) { false }
+          builder.serialize(Post.all)
+          @package = builder.send(:package)
         end
 
         it 'merges our customizations with the default header style' do
