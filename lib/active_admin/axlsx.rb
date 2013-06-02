@@ -1,10 +1,10 @@
 require 'active_admin'
-require 'active_admin/axlsx/build_download_format_links'
 require 'active_admin/axlsx/version'
 require 'active_admin/axlsx/builder'
 require 'active_admin/axlsx/dsl'
 require 'active_admin/axlsx/resource_extension'
 require 'active_admin/axlsx/resource_controller_extension'
+
 class Railtie < ::Rails::Railtie
   config.before_initialize do
     begin

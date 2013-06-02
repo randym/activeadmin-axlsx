@@ -76,6 +76,7 @@ module ActiveAdmin
               end
             }
             before_filter do |sheet|
+              collection.first.author.first_name = 'Set In Proc'
               sheet.add_row ['Created', Time.zone.now]
               sheet.add_row []
             end
@@ -89,6 +90,11 @@ module ActiveAdmin
           builder.stub(:clean_up) { false }
           builder.serialize(Post.all)
           @package = builder.send(:package)
+          @collection = builder.collection
+        end
+
+        it 'provides the collection object' do
+          @collection.count.should == Post.all.count
         end
 
         it 'merges our customizations with the default header style' do
@@ -109,6 +115,11 @@ module ActiveAdmin
         it 'processes the before filter' do
           @package.workbook.worksheets.first["A1"].value.should == 'Created'
         end
+
+        it 'lets us work against the collection in the before filter' do
+          @package.workbook.worksheets.first.rows.last.cells.first.value.should == 'Set In Proc nancy'
+        end
+
         it 'processes the after filter' do
           @package.workbook.charts.size.should == 1
         end

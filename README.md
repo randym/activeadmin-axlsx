@@ -20,22 +20,22 @@ appreciation for the gem, please don't hesitate to make a donation.
 
 **License**: MIT License
 
-**Latest Version**: 2.0.1
+**Latest Version**: 2.1.2
 
-**Ruby Version**: 1.9.2, 1.9.3
+**Ruby Version**: 1.9.2, 1.9.3, 2.0.0
 
 **JRuby Version**: 1.9 mode
 
 **Rubinius Version**: rubinius 2.0.0dev * lower versions may run, this gem always tests against head.
 
-**Release Date**: TBA
+**Release Date**: 2013.06.02
 
 Synopsis
 --------
 
 This gem provides automatic OOXML (xlsx) downloads for Active Admin
 resources. It lets you harness the full power of Axlsx when you want to
-but for the most part just stays out of your way and adds a link next to 
+but for the most part just stays out of your way and adds a link next to
 the csv download for xlsx (Excel/numbers/Libre Office/Google Docs)
 
 ![Screen 1](https://github.com/randym/activeadmin-axlsx/raw/master/screen_capture.png)
@@ -53,7 +53,7 @@ Cool Toys
 ---------
 
 Here are a few quick examples of things you can easily tweak.
-Axlsx supports A LOT of the specification so if you are looking to do 
+Axlsx supports A LOT of the specification so if you are looking to do
 something adventurous please ping me on irc. (freenode#axlsx)
 
 ##localize column headers
@@ -71,7 +71,7 @@ end
 #app/admin/posts.rb
 ActiveAdmin.register Post do
   config.xlsx_builder.column('author_name') do |resource|
-    resource.author.name 
+    resource.author.name
   end
 end
 ```
@@ -98,14 +98,14 @@ end
 #Using the DSL
 
 Everything that you do with the config'd default builder can be done via
-the resource DSL. 
+the resource DSL.
 
 Below is an example of the DSL
 
 ```ruby
 ActiveAdmin.register Post do
   # i18n_scope and header style are set via options
-  xlsx(:i18n_scope => [:active_admin, :axlsx, :post], 
+  xlsx(:i18n_scope => [:active_admin, :axlsx, :post],
        :header_style => {:bg_color => 'FF0000', :fg_color => 'FF' }) do
 
     # deleting columns from the report
@@ -113,7 +113,7 @@ ActiveAdmin.register Post do
 
     # adding a column to the report
     column(:author) { |resource| "#{resource.author.first_name} #{resource.author.last_name}" }
-    
+
     # creating a chart and inserting additional data with after_filter
     after_filter { |sheet|
       sheet.add_row []
@@ -145,7 +145,7 @@ end
 #Specs
 ------
 Running specs for this gem requires that you construct a rails application.
-To execute the specs, navigate to the gem directory, 
+To execute the specs, navigate to the gem directory,
 run bundle install and run these to rake tasks:
 
 ```
@@ -156,8 +156,14 @@ bundle exec rake setup
 bundle exec rake
 ```
 # Changelog
+**2013.06.02** Release 2.1.2
+  - builder#collection is now set on serialize and is available in before and after filters.
+  - Code cleanup
+**2013.04.18** Release 2.1.1
+  - Fixed issue with repeating data in sheets across downloads
+  - Updated to use activeadmin 0.6.0+ which supports plugins.
 **2013.03.21** Release 2.0.1
-  - Fixed an issue with missing objects when using the DSL. 
+  - Fixed an issue with missing objects when using the DSL.
     Huge thanks to [Fivell](https://github.com/Fivell)
 **2012.11.29** Release 2.0.0
   - resouce content column are now pre-populated.

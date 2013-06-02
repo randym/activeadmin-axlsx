@@ -4,7 +4,7 @@ gemspec
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'rake',           '~> 0.9.6', :require => false
+  gem 'rake',           '~> 10.0.4', :require => false
   gem 'haml',           '~> 3.1.1', :require => false
   gem 'yard'
   gem 'rdiscount' # For yard

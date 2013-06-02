@@ -89,7 +89,12 @@ module ActiveAdmin
       # The columns this builder will be serializing
       attr_reader :columns
 
-      # removes all columns from the builder. This is useful when you want to 
+      # The collection we are serializing.
+      # @note This is only available after serialize has been called,
+      # and is reset on each subsequent call.
+      attr_reader :collection
+
+      # removes all columns from the builder. This is useful when you want to
       # only render specific columns. To remove specific columns use ignore_column.
       def clear_columns
         @columns = []
@@ -112,6 +117,7 @@ module ActiveAdmin
       # Serializes the collection provided
       # @return [Axlsx::Package]
       def serialize(collection)
+        @collection = collection
         apply_filter @before_filter
         export_collection(collection)
         apply_filter @after_filter
