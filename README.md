@@ -61,7 +61,7 @@ something adventurous please ping me on irc. (freenode#axlsx)
 ```ruby
 #app/admin/posts.rb
 ActiveAdmin.register Post do
-  config.xlsx_builder.i18n_scope [:active_record, :models, :posts]
+  config.xlsx_builder.i18n_scope = [:active_record, :models, :posts]
 end
 ```
 
