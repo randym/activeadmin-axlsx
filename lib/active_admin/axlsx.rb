@@ -18,8 +18,11 @@ class Railtie < ::Rails::Railtie
 
     ActiveAdmin::ResourceDSL.send :include, ActiveAdmin::Axlsx::DSL
     ActiveAdmin::Resource.send :include, ActiveAdmin::Axlsx::ResourceExtension
-    ActiveAdmin::ResourceController.send :include, ActiveAdmin::Axlsx::ResourceControllerExtension
     ActiveAdmin::Views::PaginatedCollection.add_format :xlsx
+  end
+
+  config.after_initialize do
+    ActiveAdmin::ResourceController.send :include, ActiveAdmin::Axlsx::ResourceControllerExtension
   end
 end
 
