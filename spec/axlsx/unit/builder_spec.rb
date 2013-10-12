@@ -80,6 +80,36 @@ module ActiveAdmin
         end
       end
 
+      context 'whitelisted sheet generation' do
+        let!(:users) {  [User.new(first_name: 'bob', last_name: 'nancy')] }
+
+        let!(:posts) {  [Post.new(title: 'bob', body: 'is a swell guy', author: users.first)] }
+
+        let!(:builder) {
+          Builder.new(Post, header_style: { sz: 10, fg_color: "FF0000" }, i18n_scope: [:axlsx, :post]) do
+            skip_header
+            whitelist
+            column :title
+          end
+        }
+
+        before do
+          User.stub!(:all) { users }
+          Post.stub!(:all) { posts }
+          # disable clean up so we can get the package.
+          builder.stub(:clean_up) { false }
+          builder.serialize(Post.all)
+          @package = builder.send(:package)
+          @collection = builder.collection
+        end
+
+        it 'does not serialize the header' do
+          sheet = @package.workbook.worksheets.first
+          sheet.rows.first.cells.size.should == 1
+          sheet.rows.first.cells.first.value.should == @collection.first.title
+        end
+      end
+
       context 'Sheet generation with a highly customized configuration.' do
 
         let!(:users) {  [User.new(first_name: 'bob', last_name: 'nancy')] }

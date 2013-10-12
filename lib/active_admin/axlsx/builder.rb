@@ -106,6 +106,12 @@ module ActiveAdmin
         @columns = []
       end
 
+      # Clears the default columns array so you can whitelist only the columns you
+      # want to export
+      def whitelist
+        @columns = []
+      end
+
       # Add a column
       # @param [Symbol] name The name of the column.
       # @param [Proc] block A block of code that is executed on the resource
