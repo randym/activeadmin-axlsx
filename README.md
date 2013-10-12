@@ -104,9 +104,16 @@ Below is an example of the DSL
 
 ```ruby
 ActiveAdmin.register Post do
+
   # i18n_scope and header style are set via options
   xlsx(:i18n_scope => [:active_admin, :axlsx, :post],
        :header_style => {:bg_color => 'FF0000', :fg_color => 'FF' }) do
+
+    # Specify that you want to white list column output.
+    # whitelist
+
+    # Do not serialize the header, only output data.
+    # skip_header
 
     # deleting columns from the report
     delete_columns :id, :created_at, :updated_at
@@ -161,6 +168,10 @@ bundle exec rake
   - Upgraded to most recent version of Axlsx. This introduces some non-backwards compatible
     changes and pushes rubyzip up to 1.0.0
   - Added support for scoped collections #18
+  - Added support to specify whitelist in in configuration. This will clear all columns and
+    you can then specify only the fields you want.
+  - Added support for skip_header in the builder/DSL.
+  - Moved initialization into after config block in an attempt to not crunch assets:precompile
 
 **2013.06.02** Release 2.1.2
   - builder#collection is now set on serialize and is available in before and after filters.
