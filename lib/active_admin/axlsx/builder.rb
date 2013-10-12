@@ -154,10 +154,23 @@ module ActiveAdmin
       end
 
       def export_collection(collection)
-        header_row
+        header_row(collection)
         collection.each do |resource|
           sheet.add_row resource_data(resource)
         end
+      end
+
+      # tranform column names into array of localized strings
+      # @return [Array]
+      def header_row(collection)
+        sheet.add_row header_data_for(collection), { :style => header_style_id }
+      end
+
+      def header_data_for(collection)
+        resource = collection.first
+        columns.map do |column|
+          column.localized_name(i18n_scope) if in_scope(resource, column)
+        end.compact
       end
 
       def apply_filter(filter)
@@ -171,7 +184,14 @@ module ActiveAdmin
       end
 
       def resource_data(resource)
-        columns.map { |column| call_method_or_proc_on resource, column.data }
+        columns.map  do |column|
+          call_method_or_proc_on resource, column.data if in_scope(resource, column)
+        end
+      end
+
+      def in_scope(resource, column)
+        return true unless column.name.is_a?(Symbol)
+        resource.respond_to?(column.name)
       end
 
       def sheet
@@ -180,12 +200,6 @@ module ActiveAdmin
 
       def package
         @package ||= ::Axlsx::Package.new(:use_shared_strings => true)
-      end
-
-      # tranform column names into array of localized strings
-      # @return [Array]
-      def header_row
-        sheet.add_row columns.map { |column| column.localized_name(i18n_scope) }, :style => header_style_id
       end
 
       def header_style_id

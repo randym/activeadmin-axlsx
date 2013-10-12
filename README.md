@@ -156,15 +156,24 @@ bundle exec rake setup
 bundle exec rake
 ```
 # Changelog
+
+**2013.10.12**
+  - Upgraded to most recent version of Axlsx. This introduces some non-backwards compatible
+    changes and pushes rubyzip up to 1.0.0
+  - Added support for scoped collections #18
+
 **2013.06.02** Release 2.1.2
   - builder#collection is now set on serialize and is available in before and after filters.
   - Code cleanup
+
 **2013.04.18** Release 2.1.1
   - Fixed issue with repeating data in sheets across downloads
   - Updated to use activeadmin 0.6.0+ which supports plugins.
+
 **2013.03.21** Release 2.0.1
   - Fixed an issue with missing objects when using the DSL.
     Huge thanks to [Fivell](https://github.com/Fivell)
+
 **2012.11.29** Release 2.0.0
   - resouce content column are now pre-populated.
   - added before and after filters
