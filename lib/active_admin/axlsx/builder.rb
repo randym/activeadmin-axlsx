@@ -41,6 +41,7 @@ module ActiveAdmin
       #   end
       #   @see ActiveAdmin::Axlsx::DSL
       def initialize(resource_class, options={}, &block)
+        @skip_header = false
         @columns = resource_columns(resource_class)
         parse_options options
         instance_eval &block if block_given?
@@ -59,6 +60,11 @@ module ActiveAdmin
       # create and apply style.
       def header_style=(style_hash)
         @header_style = header_style.merge(style_hash)
+      end
+
+      # Indicates that we do not want to serialize the column headers
+      def skip_header
+        @skip_header = true
       end
 
       # The scope to use when looking up column names to generate the report header
@@ -154,7 +160,7 @@ module ActiveAdmin
       end
 
       def export_collection(collection)
-        header_row(collection)
+        header_row(collection) unless @skip_header
         collection.each do |resource|
           sheet.add_row resource_data(resource)
         end

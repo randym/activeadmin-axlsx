@@ -20,6 +20,11 @@ module ActiveAdmin
           builder.columns.size.should == content_columns.size - 1
         end
 
+        it 'lets us say we dont want the header' do
+          builder.skip_header
+          builder.instance_values["skip_header"].should be_true
+        end
+
         it 'lets us add custom columns' do
           builder.column(:hoge)
           builder.columns.size.should == content_columns.size + 2
@@ -45,6 +50,33 @@ module ActiveAdmin
           it 'evaluates custom column blocks' do
             builder.columns.last.data.call(post).should == "Hot Dawg - with cheese"
           end
+        end
+      end
+
+      context 'sheet generation without headers' do
+        let!(:users) {  [User.new(first_name: 'bob', last_name: 'nancy')] }
+
+        let!(:posts) {  [Post.new(title: 'bob', body: 'is a swell guy', author: users.first)] }
+
+        let!(:builder) {
+          Builder.new(Post, header_style: { sz: 10, fg_color: "FF0000" }, i18n_scope: [:axlsx, :post]) do
+            skip_header
+          end
+        }
+
+        before do
+          User.stub!(:all) { users }
+          Post.stub!(:all) { posts }
+          # disable clean up so we can get the package.
+          builder.stub(:clean_up) { false }
+          builder.serialize(Post.all)
+          @package = builder.send(:package)
+          @collection = builder.collection
+        end
+
+        it 'does not serialize the header' do
+          not_header = @package.workbook.worksheets.first.rows.first
+          not_header.cells.first.value.should_not == 'Title'
         end
       end
 
