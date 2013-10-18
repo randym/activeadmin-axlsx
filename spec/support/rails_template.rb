@@ -12,7 +12,9 @@ gsub_file 'config/database.yml', /\z/, "\ncucumber_with_reloading:\n  <<: *test\
 generate :model, "post title:string body:text published_at:datetime author_id:integer category_id:integer"
 inject_into_file 'app/models/post.rb', "  belongs_to :author, :class_name => 'User'\n  belongs_to :category\n  accepts_nested_attributes_for :author\n", :after => "class Post < ActiveRecord::Base\n"
 # Rails 3.2.3 model generator declare attr_accessible
-inject_into_file 'app/models/post.rb', "  attr_accessible :author\n", :before => "end" if Rails::VERSION::STRING >= '3.2.3'
+if Gem::Version.new(::Rails::VERSION::STRING) >= Gem::Version.new('3.2.3')
+  inject_into_file 'app/models/post.rb', "  attr_accessible :author\n", :before => "end"
+end
 generate :model, "user type:string first_name:string last_name:string username:string age:integer"
 inject_into_file 'app/models/user.rb', "  has_many :posts, :foreign_key => 'author_id'\n", :after => "class User < ActiveRecord::Base\n"
 generate :model, "publisher --migration=false --parent=User"
@@ -26,7 +28,7 @@ gsub_file(Dir['db/migrate/*_create_tags.rb'][0], /\:tags\sdo\s.*/, ":tags, :id =
 id_model_setup = <<-EOF
   self.primary_key = :id
   before_create :set_id
-  
+
   private
   def set_id
     self.id = 8.times.inject("") { |s,e| s << (i = Kernel.rand(62); i += ((i < 10) ? 48 : ((i < 36) ? 55 : 61 ))).chr }
