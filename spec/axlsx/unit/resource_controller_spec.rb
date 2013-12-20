@@ -31,8 +31,8 @@ describe ActiveAdmin::ResourceController do
       response.headers["Content-Transfer-Encoding"].should == 'binary'
     end
 
-    it 'returns max_csv_records for per_page' do
-      controller.send(:per_page).should == controller.send(:max_csv_records)
+    it 'returns max_per_page for per_page' do
+      controller.send(:per_page).should == controller.send(:max_per_page)
     end
 
     it 'kicks back to the default per_page when we are not specifying a xlsx mime type' do
