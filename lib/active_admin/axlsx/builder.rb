@@ -128,8 +128,9 @@ module ActiveAdmin
 
       # Serializes the collection provided
       # @return [Axlsx::Package]
-      def serialize(collection)
+      def serialize(collection, view_context)
         @collection = collection
+        @view_context = view_context
         apply_filter @before_filter
         export_collection(collection)
         apply_filter @after_filter
@@ -221,6 +222,14 @@ module ActiveAdmin
       def resource_columns(resource)
         [Column.new(:id)] + resource.content_columns.map do |column|
           Column.new(column.name.to_sym)
+        end
+      end
+
+      def method_missing(method_name, *arguments)
+        if @view_context.respond_to? method_name
+          @view_context.send method_name, *arguments
+        else
+          super
         end
       end
     end
