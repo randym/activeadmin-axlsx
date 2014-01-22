@@ -42,7 +42,8 @@ module ActiveAdmin
       #   @see ActiveAdmin::Axlsx::DSL
       def initialize(resource_class, options={}, &block)
         @skip_header = false
-        @columns = resource_columns(resource_class)
+        @resource_class = resource_class
+        @columns = resource_columns(@resource_class)
         parse_options options
         instance_eval &block if block_given?
       end
@@ -117,7 +118,7 @@ module ActiveAdmin
       # @param [Proc] block A block of code that is executed on the resource
       #                     when generating row data for this column.
       def column(name, &block)
-        @columns << Column.new(name, block)
+        @columns << Column.new(name, @resource_class, block)
       end
 
       # removes columns by name
@@ -128,8 +129,9 @@ module ActiveAdmin
 
       # Serializes the collection provided
       # @return [Axlsx::Package]
-      def serialize(collection)
+      def serialize(collection, view_context)
         @collection = collection
+        @view_context = view_context
         apply_filter @before_filter
         export_collection(collection)
         apply_filter @after_filter
@@ -140,16 +142,20 @@ module ActiveAdmin
 
       class Column
 
-        def initialize(name, block = nil)
-          @name = name.to_sym
+        def initialize(name, resource_class = nil, block = nil)
+          @name = name
+          @resource_class = resource_class
           @data = block || @name
         end
 
         attr_reader :name, :data
 
         def localized_name(i18n_scope = nil)
-          return name.to_s.titleize unless i18n_scope
-          I18n.t name, scope: i18n_scope
+          if i18n_scope
+            I18n.t name, scope: i18n_scope
+          else
+            name.is_a?(Symbol) && @resource_class.present? ? @resource_class.human_attribute_name(name) : name.to_s.humanize
+          end
         end
       end
 
@@ -219,8 +225,16 @@ module ActiveAdmin
       end
 
       def resource_columns(resource)
-        [Column.new(:id)] + resource.content_columns.map do |column|
-          Column.new(column.name.to_sym)
+        [Column.new(:id, @resource_class)] + resource.content_columns.map do |column|
+          Column.new(column.name.to_sym, @resource_class)
+        end
+      end
+
+      def method_missing(method_name, *arguments)
+        if @view_context.respond_to? method_name
+          @view_context.send method_name, *arguments
+        else
+          super
         end
       end
     end

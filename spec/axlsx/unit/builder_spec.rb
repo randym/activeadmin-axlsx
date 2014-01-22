@@ -51,6 +51,26 @@ module ActiveAdmin
             builder.columns.last.data.call(post).should == "Hot Dawg - with cheese"
           end
         end
+
+        context 'Using helper methods in column generation' do
+          let(:post) { Post.new(:title => "Hot Dawg") }
+          let(:view_context) do
+            obj = {}
+            def obj.helper_method(title)
+              "#{title} from helper_method in view_context"
+            end
+            obj
+          end
+
+          before do
+            builder.instance_variable_set :@view_context, view_context
+            builder.column(:hoge) { |resource| helper_method(resource.title) }
+          end
+
+          it 'stores the block when defining a column for later execution.' do
+            builder.instance_exec(post, &builder.columns.last.data).should == "Hot Dawg from helper_method in view_context"
+          end
+        end
       end
 
       context 'sheet generation without headers' do
@@ -69,7 +89,7 @@ module ActiveAdmin
           Post.stub!(:all) { posts }
           # disable clean up so we can get the package.
           builder.stub(:clean_up) { false }
-          builder.serialize(Post.all)
+          builder.serialize(Post.all, nil)
           @package = builder.send(:package)
           @collection = builder.collection
         end
@@ -98,7 +118,7 @@ module ActiveAdmin
           Post.stub!(:all) { posts }
           # disable clean up so we can get the package.
           builder.stub(:clean_up) { false }
-          builder.serialize(Post.all)
+          builder.serialize(Post.all, nil)
           @package = builder.send(:package)
           @collection = builder.collection
         end
@@ -111,15 +131,22 @@ module ActiveAdmin
       end
 
       context 'Sheet generation with a highly customized configuration.' do
-
         let!(:users) {  [User.new(first_name: 'bob', last_name: 'nancy')] }
 
         let!(:posts) {  [Post.new(title: 'bob', body: 'is a swell guy', author: users.first)] }
 
+        let(:view_context) do
+          obj = {}
+          def obj.augment(text)
+            "augmented #{text}"
+          end
+          obj
+        end
+
         let!(:builder) {
           Builder.new(Post, header_style: { sz: 10, fg_color: "FF0000" }, i18n_scope: [:axlsx, :post]) do
             delete_columns :id, :created_at, :updated_at
-            column(:author) { |resource| "#{resource.author.first_name} #{resource.author.last_name}" }
+            column(:author) { |resource| augment "#{resource.author.first_name} #{resource.author.last_name}" }
             after_filter { |sheet|
               sheet.add_row []
               sheet.add_row ['Author Name', 'Number of Posts']
@@ -150,7 +177,7 @@ module ActiveAdmin
           Post.stub!(:all) { posts }
           # disable clean up so we can get the package.
           builder.stub(:clean_up) { false }
-          builder.serialize(Post.all)
+          builder.serialize(Post.all, view_context)
           @package = builder.send(:package)
           @collection = builder.collection
         end
@@ -188,6 +215,10 @@ module ActiveAdmin
 
         it 'has no OOXML validation errors' do
           @package.validate.size.should ==  0
+        end
+
+        it 'executes helper method from view_context passed to serialize method' do
+          builder.instance_exec(posts.first, &builder.columns.last.data).should == 'augmented Set In Proc nancy'
         end
       end
     end
