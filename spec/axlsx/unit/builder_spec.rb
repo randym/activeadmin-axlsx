@@ -35,6 +35,11 @@ module ActiveAdmin
           builder.columns.size.should == 0
         end
 
+        it 'lets us to keep certain columns' do
+          builder.keep_columns(:id)
+          builder.columns.size.should == 1
+        end
+
         context 'Using Procs for delayed content generation' do
 
           let(:post) { Post.new(:title => "Hot Dawg") }

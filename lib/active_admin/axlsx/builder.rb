@@ -126,6 +126,10 @@ module ActiveAdmin
         @columns.delete_if { |column| column_names.include?(column.name) }
       end
 
+      def keep_columns(*column_names)
+        @columns.delete_if { |column| not column_names.include?(column.name) }
+      end
+
       # Serializes the collection provided
       # @return [Axlsx::Package]
       def serialize(collection)

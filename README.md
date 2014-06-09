@@ -93,6 +93,15 @@ end
 ActiveAdmin.register Post do
   config.xlsx_builder.delete_columns :id, :created_at, :updated_at
 end
+
+
+```##Keep columns
+
+```ruby
+#app/admin/posts.rb
+ActiveAdmin.register Post do
+  config.xlsx_builder.keep_columns :id, :created_at, :updated_at
+end
 ```
 
 #Using the DSL
