@@ -16,9 +16,6 @@ class Railtie < ::Rails::Railtie
       # noop
     end
 
-  end
-
-  config.after_initialize do
     ActiveAdmin::ResourceDSL.send :include, ActiveAdmin::Axlsx::DSL
     ActiveAdmin::Resource.send :include, ActiveAdmin::Axlsx::ResourceExtension
     ActiveAdmin::Views::PaginatedCollection.add_format :xlsx
