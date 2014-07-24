@@ -1,3 +1,5 @@
+
+
 module ActiveAdmin
   module Axlsx
     module ResourceExtension
@@ -8,6 +10,7 @@ module ActiveAdmin
       def xlsx_builder
         @xlsx_builder ||= ActiveAdmin::Axlsx::Builder.new(resource_class)
       end
+
     end
   end
 end

@@ -4,6 +4,7 @@ require 'active_admin/axlsx/builder'
 require 'active_admin/axlsx/dsl'
 require 'active_admin/axlsx/resource_extension'
 require 'active_admin/axlsx/resource_controller_extension'
+# require 'action_controller'
 
 class Railtie < ::Rails::Railtie
   config.before_initialize do
@@ -25,5 +26,4 @@ class Railtie < ::Rails::Railtie
     ActiveAdmin::ResourceController.send :include, ActiveAdmin::Axlsx::ResourceControllerExtension
   end
 end
-
 
