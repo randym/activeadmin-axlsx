@@ -1,5 +1,3 @@
-
-
 module ActiveAdmin
   module Axlsx
     module ResourceExtension
