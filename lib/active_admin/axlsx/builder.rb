@@ -141,7 +141,7 @@ module ActiveAdmin
       class Column
 
         def initialize(name, block = nil)
-          @name = name.to_sym
+          @name = name
           @data = block || @name
         end
 
@@ -149,7 +149,7 @@ module ActiveAdmin
 
         def localized_name(i18n_scope = nil)
           return name.to_s.titleize unless i18n_scope
-          I18n.t name, scope: i18n_scope
+          I18n.t name.to_sym, scope: i18n_scope
         end
       end
 
