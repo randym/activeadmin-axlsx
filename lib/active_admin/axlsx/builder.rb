@@ -42,7 +42,7 @@ module ActiveAdmin
       #   @see ActiveAdmin::Axlsx::DSL
       def initialize(resource_class, options={}, &block)
         @skip_header = false
-        @columns = resource_columns(resource_class)
+        @columns = nil
         parse_options options
         instance_eval &block if block_given?
       end
@@ -94,6 +94,10 @@ module ActiveAdmin
 
       # The columns this builder will be serializing
       attr_reader :columns
+      
+      def columns
+        @columns ||= resource_columns(resource_class)
+      end
 
       # The collection we are serializing.
       # @note This is only available after serialize has been called,
