@@ -43,6 +43,7 @@ module ActiveAdmin
       def initialize(resource_class, options={}, &block)
         @skip_header = false
         @columns = nil
+        @resource_class = resource_class
         parse_options options
         instance_eval &block if block_given?
       end
@@ -96,7 +97,7 @@ module ActiveAdmin
       attr_reader :columns
       
       def columns
-        @columns ||= resource_columns(resource_class)
+        @columns ||= resource_columns(@resource_class)
       end
 
       # The collection we are serializing.
