@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 gem 'axlsx'
+gem 'activeadmin', github: 'gregbell/active_admin'
 gemspec
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'haml',           '~> 3.1.1', :require => false
+  gem 'haml', :require => false
   gem 'yard'
   gem 'rdiscount' # For yard
   gem "sprockets"
@@ -15,9 +16,9 @@ group :test do
   gem 'inherited_resources'
   gem 'sass-rails'
   gem 'rspec-mocks'
-  gem 'rspec-rails',    '~> 2.9.0'
-  gem 'cucumber-rails', '1.2.1', :require => false
-  gem 'capybara',       '1.1.2'
+  gem 'rspec-rails'
+  gem 'cucumber-rails', :require => false
+  gem 'capybara'
   gem 'database_cleaner'
   gem 'shoulda-matchers', '1.0.0'
   gem 'launchy'
