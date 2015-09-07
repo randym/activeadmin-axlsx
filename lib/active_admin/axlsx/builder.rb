@@ -41,7 +41,6 @@ module ActiveAdmin
       #   end
       #   @see ActiveAdmin::Axlsx::DSL
       def initialize(resource_class, options={}, &block)
-        @skip_header = false
         @columns = resource_columns(resource_class)
         parse_options options
         instance_eval &block if block_given?
@@ -60,11 +59,6 @@ module ActiveAdmin
       # create and apply style.
       def header_style=(style_hash)
         @header_style = header_style.merge(style_hash)
-      end
-
-      # Indicates that we do not want to serialize the column headers
-      def skip_header
-        @skip_header = true
       end
 
       # The scope to use when looking up column names to generate the report header
@@ -103,12 +97,6 @@ module ActiveAdmin
       # removes all columns from the builder. This is useful when you want to
       # only render specific columns. To remove specific columns use ignore_column.
       def clear_columns
-        @columns = []
-      end
-
-      # Clears the default columns array so you can whitelist only the columns you
-      # want to export
-      def whitelist
         @columns = []
       end
 
@@ -166,23 +154,10 @@ module ActiveAdmin
       end
 
       def export_collection(collection)
-        header_row(collection) unless @skip_header
+        header_row
         collection.each do |resource|
           sheet.add_row resource_data(resource)
         end
-      end
-
-      # tranform column names into array of localized strings
-      # @return [Array]
-      def header_row(collection)
-        sheet.add_row header_data_for(collection), { :style => header_style_id }
-      end
-
-      def header_data_for(collection)
-        resource = collection.first
-        columns.map do |column|
-          column.localized_name(i18n_scope) if in_scope(resource, column)
-        end.compact
       end
 
       def apply_filter(filter)
@@ -196,14 +171,7 @@ module ActiveAdmin
       end
 
       def resource_data(resource)
-        columns.map  do |column|
-          call_method_or_proc_on resource, column.data if in_scope(resource, column)
-        end
-      end
-
-      def in_scope(resource, column)
-        return true unless column.name.is_a?(Symbol)
-        resource.respond_to?(column.name)
+        columns.map { |column| call_method_or_proc_on resource, column.data }
       end
 
       def sheet
@@ -212,6 +180,12 @@ module ActiveAdmin
 
       def package
         @package ||= ::Axlsx::Package.new(:use_shared_strings => true)
+      end
+
+      # tranform column names into array of localized strings
+      # @return [Array]
+      def header_row
+        sheet.add_row columns.map { |column| column.localized_name(i18n_scope) }, :style => header_style_id
       end
 
       def header_style_id

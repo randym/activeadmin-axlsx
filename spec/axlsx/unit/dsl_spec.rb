@@ -11,7 +11,6 @@ module ActiveAdmin
               column(:author) { |post| post.author.first_name }
               before_filter { |sheet| sheet.add_row ['before_filter'] }
               after_filter { |sheet| sheet.add_row['after_filter'] }
-              skip_header
             end
           end
           config.xlsx_builder
@@ -38,11 +37,6 @@ module ActiveAdmin
         it "has an after filter set" do
           builder.instance_values["after_filter"].should be_a(Proc)
         end
-
-        it "indicates that the header should be excluded" do
-          builder.instance_values['skip_header'].should be_true
-        end
-
         it "updates the header style" do
           builder.header_style[:sz].should be(20)
         end
