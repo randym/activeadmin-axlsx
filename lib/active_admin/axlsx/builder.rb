@@ -42,7 +42,8 @@ module ActiveAdmin
       #   @see ActiveAdmin::Axlsx::DSL
       def initialize(resource_class, options={}, &block)
         @skip_header = false
-        @columns = resource_columns(resource_class)
+        @columns = nil
+        @resource_class = resource_class
         parse_options options
         instance_eval &block if block_given?
       end
@@ -94,6 +95,10 @@ module ActiveAdmin
 
       # The columns this builder will be serializing
       attr_reader :columns
+      
+      def columns
+        @columns ||= resource_columns(@resource_class)
+      end
 
       # The collection we are serializing.
       # @note This is only available after serialize has been called,
@@ -141,7 +146,7 @@ module ActiveAdmin
       class Column
 
         def initialize(name, block = nil)
-          @name = name.to_sym
+          @name = name
           @data = block || @name
         end
 
@@ -149,7 +154,7 @@ module ActiveAdmin
 
         def localized_name(i18n_scope = nil)
           return name.to_s.titleize unless i18n_scope
-          I18n.t name, scope: i18n_scope
+          I18n.t name.to_sym, scope: i18n_scope
         end
       end
 
