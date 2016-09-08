@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     activeadmin-axlsx (3.0.0)
-      activeadmin (~> 1.0.0)
+      activeadmin (=> 1.0.0.pre2)
       axlsx
 
 GEM
