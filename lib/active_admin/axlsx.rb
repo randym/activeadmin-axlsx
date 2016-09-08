@@ -25,5 +25,3 @@ class Railtie < ::Rails::Railtie
     ActiveAdmin::ResourceController.send :include, ActiveAdmin::Axlsx::ResourceControllerExtension
   end
 end
-
-
