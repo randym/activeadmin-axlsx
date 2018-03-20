@@ -1,6 +1,9 @@
+require "active_support"
 module ActiveAdmin
   module Axlsx
     module ResourceControllerExtension
+
+
       def self.included(base)
         base.send :alias_method_chain, :per_page, :xlsx
         base.send :alias_method_chain, :index, :xlsx
